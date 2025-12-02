@@ -1,0 +1,38 @@
+name: Deploy Static HTML
+
+on:
+  push:
+    branches:
+      - main  # Change if needed
+
+permissions:
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 📌 Upload the static files as the GitHub Pages artifact
+      - name: Upload static HTML artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public        # Folder containing index.html
+          overwrite: true       # <-- ENABLES FULL OVERWRITE
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+
+    steps:
+      # 📌 Deployment step — overwrites existing site
+      - id: deploy
+        name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4

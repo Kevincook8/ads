@@ -21,7 +21,7 @@ jobs:
       - name: Upload static HTML artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./public        # Folder containing index.html
+          path: ./        # Folder containing index.html
           overwrite: true       # <-- ENABLES FULL OVERWRITE
 
   deploy:
